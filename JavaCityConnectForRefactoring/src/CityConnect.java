@@ -5,7 +5,7 @@
  * write non-OO code using an OO language.
  * ====================================================================
  */
-
+a
 import java.util.Scanner;
 /**
  * This class is used to store and retrieve the distance between various locations 
@@ -99,22 +99,35 @@ public class CityConnect {
 	 */
 	public static void main(String[] args) {
 		showToUser(WELCOME_MESSAGE);
+		run();
+	}
+
+	
+	private static void run() {
 		while (true) {
 			printMessage("Enter command:");
-			String command = scanner.nextLine();
-			String userCommand = command;
-			String feedback = executeCommand(userCommand);
+			String command = readCommand();
+			String feedback = executeCommand(command);
 			showToUser(feedback);
 		}
 	}
 
+
+	private static String readCommand() {
+		String command = scanner.nextLine();
+		return command;
+	}
+
+
 	
-	public static void printMessage(String msg){
+	/*
+	 * This method is to print message to user
+	 * */
+	private static void printMessage(String msg){
 		System.out.println(msg);
 	}
 	
-	
-	
+
 	
 	/*
 	 * ==============NOTE TO STUDENTS==========================================
@@ -211,9 +224,7 @@ public class CityConnect {
 		if (position == NOT_FOUND) {
 			return String.format(MESSAGE_NO_ROUTE, newStartLocation,
 					newEndLocation);
-		} 
-		else 
-		{
+		} else {
 			return String.format(MESSAGE_DISTANCE, newStartLocation, newEndLocation,
 					route[position][STORAGE_POSITION_DISTANCE]);
 		}
@@ -349,4 +360,8 @@ public class CityConnect {
 		String[] parameters = commandParametersString.trim().split("\\s+");
 		return parameters;
 	}
+	
+	
+	//private static Str
+	
 }
