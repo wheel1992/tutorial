@@ -100,7 +100,7 @@ public class CityConnect {
 	public static void main(String[] args) {
 		showToUser(WELCOME_MESSAGE);
 		while (true) {
-			System.out.print("Enter command:");
+			printMessage("Enter command:");
 			String command = scanner.nextLine();
 			String userCommand = command;
 			String feedback = executeCommand(userCommand);
@@ -108,6 +108,13 @@ public class CityConnect {
 		}
 	}
 
+	
+	public static void printMessage(String msg){
+		System.out.println(msg);
+	}
+	
+	
+	
 	
 	/*
 	 * ==============NOTE TO STUDENTS==========================================
