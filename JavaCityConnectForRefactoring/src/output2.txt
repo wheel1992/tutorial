@@ -1,0 +1,14 @@
+Welcome to SimpleRouteStore!
+Enter command:
+Route from Clementi to BuonaVista with distance 12km added
+Enter command:
+Distance from Clementi to BuonaVista is 12
+Enter command:
+Distance from clementi to buonavista is 12
+Enter command:
+No route exists from Clementi to JurongWest!
+Enter command:
+Route from Clementi to JurongWest with distance 24km added
+Enter command:
+Distance from Clementi to JurongWest is 24
+Enter command:

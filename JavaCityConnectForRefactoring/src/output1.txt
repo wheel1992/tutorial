@@ -1,0 +1,16 @@
+Welcome to SimpleRouteStore!
+Enter command:
+invalid command format :Enter command:addroute Clementi BuonaVista 12
+Enter command:
+invalid command format :Enter command:getdistance Clementi BuonaVista
+Enter command:
+invalid command format :Enter command:getdistance clementi buonavista
+Enter command:
+invalid command format :Enter command:getdistance Clementi JurongWest
+Enter command:
+invalid command format :Enter command:addroute Clementi JurongWest 24
+Enter command:
+invalid command format :Enter command:getdistance Clementi JurongWest
+Enter command:
+invalid command format :Enter command:exit
+Enter command:

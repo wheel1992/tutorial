@@ -1,0 +1,7 @@
+Enter command:addroute Clementi BuonaVista 12
+Enter command:getdistance Clementi BuonaVista
+Enter command:getdistance clementi buonavista
+Enter command:getdistance Clementi JurongWest
+Enter command:addroute Clementi JurongWest 24
+Enter command:getdistance Clementi JurongWest
+Enter command:exit

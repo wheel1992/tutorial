@@ -5,7 +5,7 @@
  * write non-OO code using an OO language.
  * ====================================================================
  */
-a
+
 import java.util.Scanner;
 /**
  * This class is used to store and retrieve the distance between various locations 
@@ -310,12 +310,13 @@ public class CityConnect {
 			String existingStartLocation = route[i][STORAGE_POSITION_START_LOCATION];
 			String existingEndLocation = route[i][STORAGE_POSITION_END_LOCATION];
 
-			if (existingStartLocation == null) { // empty slot
-				return i;
-			} else if (sameRoute(existingStartLocation, existingEndLocation,
+			//existingStartLocation = null when slot is empty
+			if (existingStartLocation == null || sameRoute(existingStartLocation, existingEndLocation,
 					newStartLocation, newEndLocation)) {
 				return i;
 			}
+			
+			
 		}
 		return SLOT_UNAVAILABLE;
 	}
@@ -352,13 +353,13 @@ public class CityConnect {
 	}
 
 	private static String getFirstWord(String userCommand) {
-		String commandTypeString = userCommand.trim().split("\\s+")[0];
-		return commandTypeString;
+		//String commandTypeString = userCommand.trim().split("\\s+")[0];
+		return userCommand.trim().split("\\s+")[0];
 	}
 
 	private static String[] splitParameters(String commandParametersString) {
-		String[] parameters = commandParametersString.trim().split("\\s+");
-		return parameters;
+		//String[] parameters = commandParametersString.trim().split("\\s+");
+		return commandParametersString.trim().split("\\s+");
 	}
 	
 	
