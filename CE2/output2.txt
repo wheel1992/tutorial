@@ -1,0 +1,11 @@
+Welcome to TextBuddy. test.txt is ready for use
+test.txt is empty
+all content deleted from test.txt
+added to test.txt: "hello world"
+added to test.txt: "who are we"
+added to test.txt: "what is that"
+deleted from test.txt: "hello world"
+deleted from test.txt: "what is that"
+all content deleted from test.txt
+added to test.txt: "hello pizza"
+1. hello pizza

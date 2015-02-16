@@ -1,0 +1,23 @@
+Welcome to TextBuddy. test.txt is ready for use
+added to test.txt: "123"
+added to test.txt: "456"
+added to test.txt: "789"
+deleted from test.txt: "123"
+added to test.txt: "123"
+deleted from test.txt: "456"
+added to test.txt: "456"
+1. 789
+2. 123
+3. 456
+1. 789
+2. 123
+3. 456
+all content deleted from test.txt
+added to test.txt: "123"
+added to test.txt: "456"
+deleted from test.txt: "123"
+added to test.txt: "123"
+added to test.txt: "789"
+1. 456
+2. 123
+3. 789

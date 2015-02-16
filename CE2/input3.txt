@@ -1,0 +1,17 @@
+add 123
+add 456
+add 789
+delete 1
+add 123
+delete 1
+add 456
+display
+display
+clear
+add 123
+add 456
+delete 1
+add 123
+add 789
+display
+exit

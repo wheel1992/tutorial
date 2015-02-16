@@ -1,0 +1,11 @@
+display
+clear
+add hello world
+add who are we
+add what is that
+delete 1
+delete 2
+clear
+add hello pizza
+display
+exit
