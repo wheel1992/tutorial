@@ -1,5 +1,7 @@
 import java.util.*;
 import java.io.*;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 public class TextBuddy {
 	
@@ -24,7 +26,6 @@ public class TextBuddy {
 	public enum COMMAND_TYPE{
 		ADD, DISPLAY, SEARCH, DELETE, CLEAR, EXIT, INVALID, SORT;
 	}
-	
 	
 	public static void main(String[] args){
 		
@@ -68,8 +69,13 @@ public class TextBuddy {
 				 * 
 				 * If user enter a invalid command, program will prompt an alert
 				 * */
-				String firstCommand = str.split(" ")[0];
+				//String firstCommand = str.split(" ")[0];
+				//int firstCommandLength = firstCommand.length();
+				
+				String[] commandArray = dissectCommand(str);
+				String firstCommand = commandArray[0];
 				int firstCommandLength = firstCommand.length();
+				
 				
 				COMMAND_TYPE mCommandType = determineCommandType(firstCommand);
 				
@@ -120,10 +126,12 @@ public class TextBuddy {
 		
 		}//end while
 		
-		
-		
-	}
+	}//end run
 	
+	
+	private static String[] dissectCommand(String rawCmd){
+		return rawCmd.split(" ");
+	}
 
 	private static void initDataArray(){
 		mDataArray = new ArrayList<String>(); //reinitalize 
@@ -184,6 +192,7 @@ public class TextBuddy {
 		}//end if 
 	}//end determineCommandType
 
+	
 	
 	private static void loadFile(String fileName){
 		if(isFileExist(fileName)){
@@ -433,6 +442,20 @@ public class TextBuddy {
 	}
 	
 	
+	@Test
+	public void testAllCommand(){
+		testCommand("Add command", COMMAND_TYPE.ADD, "add 1234");
+		//testCommand("Delete command", COMMAND_TYPE.DELETE, "delete 2");
+		//testCommand("Clear command", COMMAND_TYPE.CLEAR, "clear");
+		//testCommand("Search command", COMMAND_TYPE.SEARCH, "search 123");
+		//testCommand("Sort command", COMMAND_TYPE.SORT, "sort");
+	}
+	
+	
+	private void testCommand(String description, COMMAND_TYPE expectedCmdType, String command){
+
+		assertEquals(description, expectedCmdType, determineCommandType(dissectCommand(command)[0]));
+	}
 	
 	
 }//end class
