@@ -12,9 +12,9 @@ public class TextBuddy {
 	 * 
 	 * */
 	private static final String MESSAGE_INVALID_COMMAND = "invalid command format.";
-	private static final String MESSAGE_EMPTY_FILE_NAME = "Please key in a file name."
+	private static final String MESSAGE_EMPTY_FILE_NAME = "Please key in a file name.";
 			
-			
+	private static Scanner sc = null;		
 	/*
 	 * Store all data inside arraylist
 	 * */
@@ -22,14 +22,11 @@ public class TextBuddy {
 			
 			
 	public enum COMMAND_TYPE{
-		ADD, DISPLAY, DELETE, CLEAR, EXIT, INVALID;
+		ADD, DISPLAY, SEARCH, DELETE, CLEAR, EXIT, INVALID, SORT;
 	}
 	
 	
 	public static void main(String[] args){
-		
-		Scanner sc = null;
-		String fileName = "";
 		
 		if(args.length < 1){
 			printMessage(MESSAGE_EMPTY_FILE_NAME);
@@ -43,66 +40,87 @@ public class TextBuddy {
 	}//end main
 
 	private static void run(String[] args){
+		String fileName = "";
+		
 		//Get file name from argument index 0
 		fileName = args[0];
 		//Create the file with given name
-		//loadFile(fileName);
+		loadFile(fileName);
 		initDataArray();
-		createFile(fileName);
+		//createFile(fileName);
 		
 		sc = new Scanner(System.in);
 
+		
+		
 		while(sc.hasNext()){
-			String str = sc.nextLine();
-			/*
-			 * Assume the command is always valid
-			 * first word in every sentence is the command
-			 * command such as:
-			 * add [value]-> add [value]
-			 * display -> print out all lines 
-			 * delete [value]-> delete the [value] line, [value] is integer 
-			 * clear -> remove all content 
-			 * exit -> exit program
-			 * 
-			 * If user enter a invalid command, program will prompt an alert
-			 * */
-			String firstCommand = str.split(" ")[0];
-			int firstCommandLength = firstCommand.length();
-			
-			COMMAND_TYPE mCommandType = determineCommandType(firstCommand);
-			
-			switch(mCommandType){
-			
-				case ADD: //e.g. add abc
-					String newLine = str.substring(firstCommandLength + 1);
-					writeFile(fileName, newLine);
-					break;
-					
-				case DISPLAY:
-					readFile(fileName, false);
-					break;
+			try{
+				String str = sc.nextLine();
+				/*
+				 * Assume the command is always valid
+				 * first word in every sentence is the command
+				 * command such as:
+				 * add [value]-> add [value]
+				 * display -> print out all lines 
+				 * delete [value]-> delete the [value] line, [value] is integer 
+				 * clear -> remove all content 
+				 * exit -> exit program
+				 * 
+				 * If user enter a invalid command, program will prompt an alert
+				 * */
+				String firstCommand = str.split(" ")[0];
+				int firstCommandLength = firstCommand.length();
 				
-				case DELETE: //e.g. delete 1
-					int lineIndexToRemove = Integer.parseInt(str.substring(firstCommandLength + 1));
-					removeOneLine(fileName, lineIndexToRemove);
-					break;
+				COMMAND_TYPE mCommandType = determineCommandType(firstCommand);
+				
+				switch(mCommandType){
+				
+					case ADD: //e.g. add abc
+						String newLine = str.substring(firstCommandLength + 1);
+						writeFile(fileName, newLine);
+						break;
+						
+					case DISPLAY:
+						readFile(fileName, true, true); //replace the old arraylist as well
+						break;
+						
+					case SEARCH:
+						String keyword = str.substring(firstCommandLength + 1);
+						searchKeyword(keyword); //search using keyword
+						break;
 					
-				case CLEAR:
-					clearAll(fileName);
-					break;
+					case SORT:
+						sortDataArray(); //sort the data array
+						overrideDataArrayToFile(fileName); //override file using data array
+						break;
 					
-				case EXIT:
-					sc.close();
-					exitSystem(); //stop program 
-					break;
-					
-				case INVALID:
-					printMessage(MESSAGE_INVALID_COMMAND);
-					break;
-					
-			}//end switch
+					case DELETE: //e.g. delete 1
+						int lineIndexToRemove = Integer.parseInt(str.substring(firstCommandLength + 1));
+						removeOneLine(fileName, lineIndexToRemove);
+						break;
+						
+					case CLEAR:
+						clearAll(fileName);
+						break;
+						
+					case EXIT:
+						sc.close();
+						exitSystem(); //stop program 
+						break;
+						
+					case INVALID:
+						printMessage(MESSAGE_INVALID_COMMAND);
+						break;
+						
+				}//end switch
 			
+			}catch(Exception e){
+				printMessage(MESSAGE_INVALID_COMMAND);
+			}
+		
 		}//end while
+		
+		
 		
 	}
 	
@@ -130,18 +148,27 @@ public class TextBuddy {
 	
 	private static COMMAND_TYPE determineCommandType(String cmd){
 		if(cmd == null){
-			throw new Error("Command cannot be null.")
+			throw new Error("Command cannot be null.");
 		}else{
-			if (commandTypeString.equalsIgnoreCase("add")) {
+			if (cmd.equalsIgnoreCase("add")) {
 				return COMMAND_TYPE.ADD;
 				
-			} else if (commandTypeString.equalsIgnoreCase("delete")) {
+			} else if (cmd.equalsIgnoreCase("display")) {
+				return COMMAND_TYPE.DISPLAY;
+			
+			} else if (cmd.equalsIgnoreCase("search")) {
+				return COMMAND_TYPE.SEARCH;
+			
+			} else if (cmd.equalsIgnoreCase("sort")) {
+				return COMMAND_TYPE.SORT;
+				
+			} else if (cmd.equalsIgnoreCase("delete")) {
 				return COMMAND_TYPE.DELETE;
 				
-			} else if (commandTypeString.equalsIgnoreCase("clear")) {
+			} else if (cmd.equalsIgnoreCase("clear")) {
 				return COMMAND_TYPE.CLEAR;
 				
-			} else if (commandTypeString.equalsIgnoreCase("exit")) {
+			} else if (cmd.equalsIgnoreCase("exit")) {
 			 	return COMMAND_TYPE.EXIT;
 			 	
 			} else {
@@ -151,23 +178,22 @@ public class TextBuddy {
 		}//end if 
 	}//end determineCommandType
 
-	/*
+	
 	private static void loadFile(String fileName){
 		if(isFileExist(fileName)){
-			readFile(fileName, true);
+			readFile(fileName, true, false);
 		}else{
 			createFile(fileName);
 		}
 		
 	}
-	*/
 	
-	/*
+
 	private static boolean isFileExist(String fileName){
 		File mFile = new File(fileName);
 		return mFile.exists();
 	}
-	*/
+	
 	
 	//Create the new file with given name
 	private static void createFile(String filename){
@@ -188,7 +214,7 @@ public class TextBuddy {
 	
 	
 	//Read input file
-	private static void readFile(String filename, boolean isRefreshDataArray){
+	private static void readFile(String filename, boolean isRefreshDataArray, boolean toListAllValueFromFile){
 		String line = null;
 		int lineIndex = 0;
 		
@@ -214,7 +240,10 @@ public class TextBuddy {
 					
 					addDataToArray(line);
 					
-					printMessage(++lineIndex +". "+ line);
+					if (toListAllValueFromFile){
+						printMessage(++lineIndex +". "+ line);	
+					}
+					
 				}//end while
 				
 				//Always close files
@@ -244,6 +273,9 @@ public class TextBuddy {
 			 //write() does not automatically append a newline character
 			 bufferedWriter.write(newline);
 			 bufferedWriter.newLine();
+			 
+			 //add new line to arraylist
+			 addDataToArray(newline);
 			 
 			 //Always close files
 			 bufferedWriter.close();
@@ -331,58 +363,21 @@ public class TextBuddy {
 	
 	
 	/*
-	private static void removeOneLine3(String filename, int lineIndexToRemove){
-		String line = "";
-		String lineToRemove = null;
-		ArrayList<String> valueArray = new ArrayList<String>();
-		
-		//read the contents inside the file
-		File file = new File(filename);
-		if(file.length() == 0){
-			printMessage(filename +" is empty");
-			return;
-			
-		}else{
-			try{
-				FileReader fileReader = new FileReader(filename);
-
-				//Always wrap FileReader in BufferedReader.
-				BufferedReader bufferedReader = new BufferedReader(fileReader);
-		
-				//Read line by line
-				while((line = bufferedReader.readLine()) != null) {
-					valueArray.add(line);
-				}//end while
-				
-				//Always close files
-				//Close buffer reader after reading
-	            bufferedReader.close(); 
-	            fileReader.close();
-	            
-			}catch (FileNotFoundException ex){
-				printMessage(ex.getMessage());
-				
-			}catch(IOException ex) {
-				printMessage(ex.getMessage());
-			}//end try
-			
-		}//end if 	
-		
-		//remove the line from arraylist 
-		lineToRemove = valueArray.get(lineIndexToRemove - 1);
-		valueArray.remove(lineIndexToRemove - 1);
-		
-		try {
+	 * Using data from arraylist
+	 * replace the content in the file
+	 * */
+	private static void overrideDataArrayToFile(String filename){
+		 try {
 			 FileWriter fileWriter = new FileWriter(filename, false);
 			
 			 //Always wrap FileWriter in BufferedWriter
 			 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 			 
-			 for(int i=0; i<valueArray.size(); i++){
-				 bufferedWriter.write(valueArray.get(i));
+			 for(String item : mDataArray){
+				 bufferedWriter.write(item);
 				 bufferedWriter.newLine();
-			 }//end for
-			 
+			 }
+
 			 //Always close files
 			 bufferedWriter.close();
 			 fileWriter.close();
@@ -391,10 +386,41 @@ public class TextBuddy {
 			 printMessage(ex.getMessage());
 		
 		 }finally{
-			 printMessage("deleted from " + filename + ": \"" + lineToRemove + "\"");
-		 }//end try		
+			 printMessage("Has sorted successfully.");	
+		 }//end try
+	}
+	
+	
+	private static void sortDataArray(){
+		Collections.sort(mDataArray);
+		for(String item: mDataArray){
+			printMessage(item);
+		}
+	}
+	
+	
+	private static void searchKeyword(String key){
+		String result = resultSearchArray(key);
 		
-	}//end removeOneLine
-	*/
+		if (result == ""){
+			printMessage("No result found.");
+		}else{
+			printMessage(result);
+		}
+		
+	}
+	
+	private static String resultSearchArray(String str){
+		for(String item: mDataArray){
+			if (item.toLowerCase().contains(str)){
+				return item;
+			}//end if
+		}//end for
+		
+		return "";
+	}
+	
+	
+	
 	
 }//end class
