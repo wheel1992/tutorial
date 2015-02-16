@@ -126,12 +126,18 @@ public class TextBuddy {
 	
 
 	private static void initDataArray(){
-		mDataArray = new ArrayList<String>();
+		mDataArray = new ArrayList<String>(); //reinitalize 
 	}
 	
 	private static void addDataToArray(String data){
 		if(mDataArray != null){
 			mDataArray.add(data);
+		}
+	}
+	
+	private static void removeDataFromArray(int index){
+		if(mDataArray != null){
+			mDataArray.remove(index);
 		}
 	}
 	
@@ -227,7 +233,7 @@ public class TextBuddy {
 			try{
 				
 				if(isRefreshDataArray){
-					initDataArray();
+					initDataArray(); //reinitalize the data array
 				}
 				
 				FileReader fileReader = new FileReader(filename);
@@ -302,6 +308,7 @@ public class TextBuddy {
 		}finally{
 			pw.close();
 			printMessage("all content deleted from "+ filename);
+			initDataArray(); //reinitalize the data array
 		}
 		
 	}
@@ -350,14 +357,19 @@ public class TextBuddy {
 			tempFile.renameTo(targetFile);
 			
 			
+			
 		} catch (Exception ex) {
 			printMessage(ex.getMessage());
 			
 		}finally{
-			if(lineToRemove != "")
+			if(lineToRemove != ""){
 				printMessage("deleted from " + filename + ": \"" + lineToRemove + "\"");
-			else
+				
+				removeDataFromArray(lineIndexToRemove - 1); //remove string from dataArray
+				
+			}else{
 				printMessage("Invalid line index to remove.");
+			}
 		}//end try
 	}
 	
