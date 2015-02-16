@@ -11,20 +11,43 @@ public class TextBuddy {
 	 * Each user operation will save the content in the file
 	 * 
 	 * */
-
+	private static final String MESSAGE_INVALID_COMMAND = "invalid command format.";
+	private static final String MESSAGE_EMPTY_FILE_NAME = "Please key in a file name."
+			
+			
+	/*
+	 * Store all data inside arraylist
+	 * */
+	private static ArrayList<String> mDataArray = null;
+			
+			
+	public enum COMMAND_TYPE{
+		ADD, DISPLAY, DELETE, CLEAR, EXIT, INVALID;
+	}
+	
+	
 	public static void main(String[] args){
 		
 		Scanner sc = null;
 		String fileName = "";
 		
 		if(args.length < 1){
-			printMessage("Please key in a file name");
+			printMessage(MESSAGE_EMPTY_FILE_NAME);
 			exitSystem();
 		}//end if 
+
+		run(args);
 		
+
+		
+	}//end main
+
+	private static void run(String[] args){
 		//Get file name from argument index 0
 		fileName = args[0];
 		//Create the file with given name
+		//loadFile(fileName);
+		initDataArray();
 		createFile(fileName);
 		
 		sc = new Scanner(System.in);
@@ -46,42 +69,54 @@ public class TextBuddy {
 			String firstCommand = str.split(" ")[0];
 			int firstCommandLength = firstCommand.length();
 			
-			switch(firstCommand){
+			COMMAND_TYPE mCommandType = determineCommandType(firstCommand);
 			
-				case "add": //e.g. add abc
+			switch(mCommandType){
+			
+				case ADD: //e.g. add abc
 					String newLine = str.substring(firstCommandLength + 1);
 					writeFile(fileName, newLine);
 					break;
 					
-				case "display":
-					readFile(fileName);
+				case DISPLAY:
+					readFile(fileName, false);
 					break;
 				
-				case "delete": //e.g. delete 1
+				case DELETE: //e.g. delete 1
 					int lineIndexToRemove = Integer.parseInt(str.substring(firstCommandLength + 1));
 					removeOneLine(fileName, lineIndexToRemove);
 					break;
 					
-				case "clear":
+				case CLEAR:
 					clearAll(fileName);
 					break;
 					
-				case "exit":
+				case EXIT:
 					sc.close();
 					exitSystem(); //stop program 
 					break;
-			
-				default: //Wrong command
-					printMessage("invalid command");
+					
+				case INVALID:
+					printMessage(MESSAGE_INVALID_COMMAND);
 					break;
-			
+					
 			}//end switch
 			
 		}//end while
 		
-	}//end main
+	}
+	
 
-
+	private static void initDataArray(){
+		mDataArray = new ArrayList<String>();
+	}
+	
+	private static void addDataToArray(String data){
+		if(mDataArray != null){
+			mDataArray.add(data);
+		}
+	}
+	
 	//Print message
 	private static void printMessage(String msg){
 		System.out.println(msg);
@@ -91,6 +126,48 @@ public class TextBuddy {
 	private static void exitSystem(){
 		System.exit(0);
 	}//end exitSystem
+	
+	
+	private static COMMAND_TYPE determineCommandType(String cmd){
+		if(cmd == null){
+			throw new Error("Command cannot be null.")
+		}else{
+			if (commandTypeString.equalsIgnoreCase("add")) {
+				return COMMAND_TYPE.ADD;
+				
+			} else if (commandTypeString.equalsIgnoreCase("delete")) {
+				return COMMAND_TYPE.DELETE;
+				
+			} else if (commandTypeString.equalsIgnoreCase("clear")) {
+				return COMMAND_TYPE.CLEAR;
+				
+			} else if (commandTypeString.equalsIgnoreCase("exit")) {
+			 	return COMMAND_TYPE.EXIT;
+			 	
+			} else {
+				return COMMAND_TYPE.INVALID;
+				
+			}//end if 
+		}//end if 
+	}//end determineCommandType
+
+	/*
+	private static void loadFile(String fileName){
+		if(isFileExist(fileName)){
+			readFile(fileName, true);
+		}else{
+			createFile(fileName);
+		}
+		
+	}
+	*/
+	
+	/*
+	private static boolean isFileExist(String fileName){
+		File mFile = new File(fileName);
+		return mFile.exists();
+	}
+	*/
 	
 	//Create the new file with given name
 	private static void createFile(String filename){
@@ -111,7 +188,7 @@ public class TextBuddy {
 	
 	
 	//Read input file
-	private static void readFile(String filename){
+	private static void readFile(String filename, boolean isRefreshDataArray){
 		String line = null;
 		int lineIndex = 0;
 		
@@ -122,6 +199,11 @@ public class TextBuddy {
 			
 		}else{
 			try{
+				
+				if(isRefreshDataArray){
+					initDataArray();
+				}
+				
 				FileReader fileReader = new FileReader(filename);
 
 				//Always wrap FileReader in BufferedReader.
@@ -129,6 +211,9 @@ public class TextBuddy {
 		
 				//Read line by line
 				while((line = bufferedReader.readLine()) != null) {
+					
+					addDataToArray(line);
+					
 					printMessage(++lineIndex +". "+ line);
 				}//end while
 				
