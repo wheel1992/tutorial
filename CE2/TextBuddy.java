@@ -445,10 +445,10 @@ public class TextBuddy {
 	@Test
 	public void testAllCommand(){
 		testCommand("Add command", COMMAND_TYPE.ADD, "add 1234");
-		//testCommand("Delete command", COMMAND_TYPE.DELETE, "delete 2");
-		//testCommand("Clear command", COMMAND_TYPE.CLEAR, "clear");
-		//testCommand("Search command", COMMAND_TYPE.SEARCH, "search 123");
-		//testCommand("Sort command", COMMAND_TYPE.SORT, "sort");
+		testCommand("Delete command", COMMAND_TYPE.DELETE, "delete 2");
+		testCommand("Clear command", COMMAND_TYPE.CLEAR, "clear");
+		testCommand("Search command", COMMAND_TYPE.SEARCH, "search 123");
+		testCommand("Sort command", COMMAND_TYPE.SORT, "sort");
 	}
 	
 	
