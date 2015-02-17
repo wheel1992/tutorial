@@ -442,6 +442,8 @@ public class TextBuddy {
 	}
 	
 	
+	/*============== Testing ==================*/
+	
 	@Test
 	public void testAllCommand(){
 		testCommand("Add command", COMMAND_TYPE.ADD, "add 1234");
@@ -451,11 +453,22 @@ public class TextBuddy {
 		testCommand("Sort command", COMMAND_TYPE.SORT, "sort");
 	}
 	
-	
 	private void testCommand(String description, COMMAND_TYPE expectedCmdType, String command){
-
 		assertEquals(description, expectedCmdType, determineCommandType(dissectCommand(command)[0]));
 	}
+	
+	@Test
+	public void testFileExist(){
+		assertEquals("File exists", true, isFileExist("test.txt"));
+	}
+	
+	@Test
+	public void testFileNotExist(){
+		assertEquals("File not exists", false, isFileExist("abc.txt"));
+	}
+	
+
+	
 	
 	
 }//end class
