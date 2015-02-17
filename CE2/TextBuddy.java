@@ -467,7 +467,11 @@ public class TextBuddy {
 		assertEquals("File not exists", false, isFileExist("abc.txt"));
 	}
 	
-
+	@Test
+	public void testCreateFile(){
+		createFile("123.txt");
+		assertEquals("File exists", true, isFileExist("123.txt"));
+	}
 	
 	
 	
