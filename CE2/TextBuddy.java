@@ -473,7 +473,6 @@ public class TextBuddy {
 		assertEquals("File exists", true, isFileExist("123.txt"));
 	}
 	
-	
 	@Test
 	public void testReadFile(){
 		readFile("test.txt", true, true);
@@ -487,6 +486,15 @@ public class TextBuddy {
 		}
 		return str.trim();
 	}
+	
+	@Test
+	public void testSortArray(){
+		readFile("test_2.txt", true, true);
+		sortDataArray(); //sort the array
+		assertEquals("Sort Array", "a\nb\nc\nd\ne\nf", testGetDataFromArray());
+	}
+	
+	
 	
 	
 }//end class
