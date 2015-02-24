@@ -474,5 +474,19 @@ public class TextBuddy {
 	}
 	
 	
+	@Test
+	public void testReadFile(){
+		readFile("test.txt", true, true);
+		assertEquals("Read content from file", "123\n456\n789", testGetDataFromArray());
+	}
+	
+	private String testGetDataFromArray(){
+		String str = "";
+		for(String s : mDataArray){
+			str = str + s + "\n";
+		}
+		return str.trim();
+	}
+	
 	
 }//end class
