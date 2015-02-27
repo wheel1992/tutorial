@@ -23,7 +23,7 @@ public class TextBuddy {
 	private static ArrayList<String> mDataArray = null;
 			
 			
-	public enum COMMAND_TYPE{
+	public static enum COMMAND_TYPE{
 		ADD, DISPLAY, SEARCH, DELETE, CLEAR, EXIT, INVALID, SORT;
 	}
 	
@@ -129,7 +129,7 @@ public class TextBuddy {
 	}//end run
 	
 	
-	private static String[] dissectCommand(String rawCmd){
+	public static String[] dissectCommand(String rawCmd){
 		return rawCmd.split(" ");
 	}
 
@@ -160,7 +160,7 @@ public class TextBuddy {
 	}//end exitSystem
 	
 	
-	private static COMMAND_TYPE determineCommandType(String cmd){
+	public static COMMAND_TYPE determineCommandType(String cmd){
 		if(cmd == null){
 			throw new Error("Command cannot be null.");
 		}else{
@@ -194,7 +194,7 @@ public class TextBuddy {
 
 	
 	
-	private static void loadFile(String fileName){
+	public static void loadFile(String fileName){
 		if(isFileExist(fileName)){
 			readFile(fileName, true, false);
 		}else{
@@ -204,14 +204,14 @@ public class TextBuddy {
 	}
 	
 
-	private static boolean isFileExist(String fileName){
+	public static boolean isFileExist(String fileName){
 		File mFile = new File(fileName);
 		return mFile.exists();
 	}
 	
 	
 	//Create the new file with given name
-	private static void createFile(String filename){
+	public static void createFile(String filename){
 		PrintWriter pw = null;
 		try {
 			pw = new PrintWriter(filename);
@@ -229,7 +229,7 @@ public class TextBuddy {
 	
 	
 	//Read input file
-	private static void readFile(String filename, boolean isRefreshDataArray, boolean toListAllValueFromFile){
+	public static void readFile(String filename, boolean isRefreshDataArray, boolean toListAllValueFromFile){
 		String line = null;
 		int lineIndex = 0;
 		
@@ -279,7 +279,7 @@ public class TextBuddy {
 	}//end readFile
 	
 	//Write file with the new line
-	private static void writeFile(String filename, String newline){
+	public static void writeFile(String filename, String newline){
 		 try {
 			 FileWriter fileWriter = new FileWriter(filename, true);
 			
@@ -326,7 +326,7 @@ public class TextBuddy {
 	/*
 	 * Remove a line from the text file
 	 * */
-	private static void removeOneLine(String filename, int lineIndexToRemove){
+	public static void removeOneLine(String filename, int lineIndexToRemove){
 		String line = "";
 		String lineToRemove = null;
 		int currentIndex = 0;
@@ -412,7 +412,7 @@ public class TextBuddy {
 	}
 	
 	
-	private static void sortDataArray(){
+	public static void sortDataArray(){
 		Collections.sort(mDataArray);
 		for(String item: mDataArray){
 			printMessage(item);
@@ -444,42 +444,9 @@ public class TextBuddy {
 	
 	/*============== Testing ==================*/
 	
-	@Test
-	public void testAllCommand(){
-		testCommand("Add command", COMMAND_TYPE.ADD, "add 1234");
-		testCommand("Delete command", COMMAND_TYPE.DELETE, "delete 2");
-		testCommand("Clear command", COMMAND_TYPE.CLEAR, "clear");
-		testCommand("Search command", COMMAND_TYPE.SEARCH, "search 123");
-		testCommand("Sort command", COMMAND_TYPE.SORT, "sort");
-	}
+
 	
-	private void testCommand(String description, COMMAND_TYPE expectedCmdType, String command){
-		assertEquals(description, expectedCmdType, determineCommandType(dissectCommand(command)[0]));
-	}
-	
-	@Test
-	public void testFileExist(){
-		assertEquals("File exists", true, isFileExist("test.txt"));
-	}
-	
-	@Test
-	public void testFileNotExist(){
-		assertEquals("File not exists", false, isFileExist("abc.txt"));
-	}
-	
-	@Test
-	public void testCreateFile(){
-		createFile("123.txt");
-		assertEquals("File exists", true, isFileExist("123.txt"));
-	}
-	
-	@Test
-	public void testReadFile(){
-		readFile("test.txt", true, true);
-		assertEquals("Read content from file", "123\n456\n789", testGetDataFromArray());
-	}
-	
-	private String testGetDataFromArray(){
+	public static String testGetDataFromArray(){
 		String str = "";
 		for(String s : mDataArray){
 			str = str + s + "\n";
@@ -487,12 +454,7 @@ public class TextBuddy {
 		return str.trim();
 	}
 	
-	@Test
-	public void testSortArray(){
-		readFile("test_2.txt", true, true);
-		sortDataArray(); //sort the array
-		assertEquals("Sort Array", "a\nb\nc\nd\ne\nf", testGetDataFromArray());
-	}
+
 	
 	
 	
